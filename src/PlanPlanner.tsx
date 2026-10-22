@@ -1,11 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { exportPlanMarkdown } from "./exportPlan";
 import {
   demoGameplayPlan,
   installActionSketches,
   validatePlan,
 } from "./plans";
+import { RelatedBlueprints } from "./RelatedBlueprints";
 import type { LimitedPermissionPlan, LinkedAction } from "./types";
 import {
   AVOID_FOR_GREENFIELD,
@@ -19,11 +21,11 @@ export function PlanPlanner() {
   const [account, setAccount] = useState("alice.wam");
   const [newContract, setNewContract] = useState("pxfarmer.game");
   const [newAction, setNewAction] = useState("claim");
+  const [message, setMessage] = useState<string | null>(null);
 
   const errors = useMemo(() => validatePlan(plan), [plan]);
   const installRows = useMemo(
-    () => installActionSketches(account.trim() || "account",
-      plan),
+    () => installActionSketches(account.trim() || "account", plan),
     [account, plan]
   );
   const sketch = useMemo(
@@ -55,6 +57,17 @@ export function PlanPlanner() {
     }));
   };
 
+  const copyMd = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        exportPlanMarkdown(account.trim() || "account", plan)
+      );
+      setMessage("Plan markdown copied (includes revocation checklist)");
+    } catch {
+      setMessage("Clipboard unavailable");
+    }
+  };
+
   return (
     <div className="max-w-xl mx-auto p-6 space-y-6 text-white">
       <header>
@@ -79,9 +92,7 @@ export function PlanPlanner() {
           Session Kit = wallet login. Session key here = limited on-chain
           permission so routine game actions need not prompt the main wallet.
         </p>
-        <p>
-          Prefer: {RECOMMENDED_PACKAGES.slice(0, 3).join(", ")}…
-        </p>
+        <p>Prefer: {RECOMMENDED_PACKAGES.slice(0, 3).join(", ")}…</p>
         <p className="opacity-80">
           Avoid for new work: {AVOID_FOR_GREENFIELD.join("; ")}.
         </p>
@@ -116,13 +127,22 @@ export function PlanPlanner() {
             className="mt-1 w-full rounded-lg border border-white/15 bg-black/50 px-3 py-2 font-mono text-sm"
           />
         </label>
-        <button
-          type="button"
-          className="px-3 py-2 rounded-lg text-sm bg-white/10"
-          onClick={() => setPlan(demoGameplayPlan())}
-        >
-          Reset demo gameplay plan
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            className="px-3 py-2 rounded-lg text-sm bg-white/10"
+            onClick={() => setPlan(demoGameplayPlan())}
+          >
+            Reset demo gameplay plan
+          </button>
+          <button
+            type="button"
+            className="px-3 py-2 rounded-lg text-sm bg-sky-700"
+            onClick={copyMd}
+          >
+            Copy plan markdown
+          </button>
+        </div>
       </section>
 
       <section className="rounded-2xl border border-white/10 bg-black/30 p-4 space-y-3">
@@ -189,10 +209,36 @@ export function PlanPlanner() {
         <p className="text-[11px] opacity-70">{plan.riskNote}</p>
       </section>
 
+      <section className="rounded-2xl border border-white/10 bg-black/30 p-4 text-xs space-y-2 opacity-90">
+        <h2 className="font-semibold text-sm text-white">Revocation checklist</h2>
+        <ol className="list-decimal pl-5 space-y-1 leading-relaxed">
+          <li>Remove the limited key from the dApp / local storage.</li>
+          <li>
+            <code className="text-[10px]">unlinkauth</code> each linked action (or ops
+            bulk policy).
+          </li>
+          <li>
+            <code className="text-[10px]">updateauth</code> to drop the key or the
+            permission.
+          </li>
+          <li>
+            Confirm with <code className="text-[10px]">get_account</code>.
+          </li>
+        </ol>
+      </section>
+
+      {message && (
+        <p className="text-xs text-emerald-200/80" role="status">
+          {message}
+        </p>
+      )}
+
       <details className="text-[10px] opacity-50">
         <summary>Session args sketch for limited permission</summary>
         <pre className="overflow-x-auto mt-2 whitespace-pre-wrap">{sketch}</pre>
       </details>
+
+      <RelatedBlueprints />
     </div>
   );
 }
