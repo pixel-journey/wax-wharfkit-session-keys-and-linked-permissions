@@ -1,14 +1,14 @@
 # VERIFICATION-LOG
 
 **Trust label:** educational-reference  
-**Updated:** 2026-10-22 (Pass 7)
+**Updated:** 2026-10-22 (Pass 8)
 
 | Claim | Status | Evidence |
 |-------|--------|----------|
-| Plan validation | **verified** (unit) | `src/plans.test.ts` |
-| Risk hints | **verified** (unit) | `src/riskHints.test.ts` |
-| Severity / revoke / JSON | **verified** (unit) | `src/pass7.test.ts` |
+| Plan / risk / severity / revoke / JSON | **verified** (unit) | plans, riskHints, pass7 tests |
+| matchPlanToProbe | **verified** (unit) | `src/matchProbe.test.ts` |
 | Live chain writes | **not claimed** | educational only |
+| get_account | optional soft-fail | CORS / offline may fail |
 
 ```bash
 npm test && npm run typecheck
