@@ -1,30 +1,29 @@
 # Refinement completion — wax-wharfkit-session-keys-and-linked-permissions
 
 **Trust label:** `educational-reference`  
-**Passes:** 1–4 complete; **5** post-complete deepen (2026-10-22)
+**Passes:** 1–10 (2026-10-22) — **education track capped**
 
 ## Delivered
 
 | Pass | Scope |
 |------|--------|
-| 1 | Session Kit vs limited keys; pure plans |
-| 2 | PlanPlanner UI; WharfKit package notes |
-| 3 | Markdown export, revocation, related blueprints |
-| 4 | Completion freeze |
-| 5 | Presets (gameplay / claim / vote caution), ARCHITECTURE.md |
+| 1–4 | Concepts, planner, export, freeze |
+| 5 | Presets + architecture |
+| 6 | Risk hints + get_account probe |
+| 7 | Severity, revoke sketches, JSON |
+| 8 | matchPlanToProbe |
+| 9 | localStorage draft + preset severity compare |
+| 10 | `src/index.ts` barrel + docs lock |
 
-## Explicit non-goals
+## Non-goals (unchanged)
 
-- No live `updateauth` / `linkauth` from this tree
+- No live `updateauth` / `linkauth` / `unlinkauth` broadcast
 - No browser storage of owner/active keys
+- Full authority audit → `wax-account-permission-auditor`
+- Permission tree UI → `wax-permission-visualizer-and-editor`
 
 ## Verify
 
 ```bash
 npm install && npm test && npm run typecheck
 ```
-
-## Continuity
-
-- `wax-permission-visualizer-and-editor`
-- `wax-account-permission-auditor`
