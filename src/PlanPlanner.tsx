@@ -1,10 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { probeAccountPermissions } from "./accountProbe";
 import { exportPlanMarkdown } from "./exportPlan";
 import { installActionSketches, validatePlan } from "./plans";
 import { PRESET_CATALOG } from "./presets";
 import { RelatedBlueprints } from "./RelatedBlueprints";
+import { riskHintsForPlan } from "./riskHints";
 import type { LimitedPermissionPlan, LinkedAction } from "./types";
 import {
   AVOID_FOR_GREENFIELD,
@@ -21,8 +23,11 @@ export function PlanPlanner() {
   const [newContract, setNewContract] = useState("pxfarmer.game");
   const [newAction, setNewAction] = useState("claim");
   const [message, setMessage] = useState<string | null>(null);
+  const [probeText, setProbeText] = useState<string | null>(null);
+  const [probing, setProbing] = useState(false);
 
   const errors = useMemo(() => validatePlan(plan), [plan]);
+  const risks = useMemo(() => riskHintsForPlan(plan), [plan]);
   const installRows = useMemo(
     () => installActionSketches(account.trim() || "account", plan),
     [account, plan]
@@ -39,13 +44,12 @@ export function PlanPlanner() {
   );
 
   const addLink = () => {
-    const link: LinkedAction = {
-      contract: newContract.trim(),
-      action: newAction.trim(),
-    };
     setPlan((p) => ({
       ...p,
-      linkedActions: [...p.linkedActions, link],
+      linkedActions: [
+        ...p.linkedActions,
+        { contract: newContract.trim(), action: newAction.trim() },
+      ],
     }));
   };
 
@@ -65,6 +69,23 @@ export function PlanPlanner() {
     } catch {
       setMessage("Clipboard unavailable");
     }
+  };
+
+  const runProbe = async () => {
+    setProbing(true);
+    setProbeText(null);
+    const r = await probeAccountPermissions(account);
+    setProbing(false);
+    if (!r.ok) {
+      setProbeText(`Probe soft-fail: ${r.reason ?? "unknown"}`);
+      return;
+    }
+    const names = (r.permissions ?? [])
+      .map((p) => `${p.perm_name} (parent ${p.parent || "—"})`)
+      .join(", ");
+    setProbeText(
+      `Live permissions on ${r.account}: ${names || "(none listed)"}`
+    );
   };
 
   return (
@@ -115,7 +136,7 @@ export function PlanPlanner() {
           ))}
         </div>
         <label className="block text-xs opacity-70">
-          Account (for install sketches)
+          Account
           <input
             value={account}
             onChange={(e) => setAccount(e.target.value)}
@@ -142,13 +163,28 @@ export function PlanPlanner() {
             className="mt-1 w-full rounded-lg border border-white/15 bg-black/50 px-3 py-2 font-mono text-sm"
           />
         </label>
-        <button
-          type="button"
-          className="px-3 py-2 rounded-lg text-sm bg-sky-700"
-          onClick={copyMd}
-        >
-          Copy plan markdown
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            className="px-3 py-2 rounded-lg text-sm bg-sky-700"
+            onClick={copyMd}
+          >
+            Copy plan markdown
+          </button>
+          <button
+            type="button"
+            className="px-3 py-2 rounded-lg text-sm bg-white/10"
+            disabled={probing}
+            onClick={runProbe}
+          >
+            {probing ? "Probing…" : "Probe get_account"}
+          </button>
+        </div>
+        {probeText && (
+          <p className="text-[11px] opacity-70 font-mono leading-relaxed">
+            {probeText}
+          </p>
+        )}
       </section>
 
       <section className="rounded-2xl border border-white/10 bg-black/30 p-4 space-y-3">
@@ -202,6 +238,23 @@ export function PlanPlanner() {
           ))}
         </ul>
       )}
+
+      <ul className="text-xs space-y-1">
+        {risks.map((h) => (
+          <li
+            key={h.message}
+            className={
+              h.level === "danger"
+                ? "text-red-300"
+                : h.level === "warn"
+                  ? "text-amber-300"
+                  : "text-white/50"
+            }
+          >
+            [{h.level}] {h.message}
+          </li>
+        ))}
+      </ul>
 
       <section className="rounded-2xl border border-violet-500/30 bg-violet-500/10 p-4 space-y-2">
         <h2 className="font-semibold text-violet-100">Install sketch (not sent)</h2>
