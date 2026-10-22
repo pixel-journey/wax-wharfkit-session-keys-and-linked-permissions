@@ -2,12 +2,15 @@
 
 import { useMemo, useState } from "react";
 import { probeAccountPermissions } from "./accountProbe";
+import { exportPlanJson } from "./exportJson";
 import { exportPlanMarkdown } from "./exportPlan";
 import { installActionSketches, validatePlan } from "./plans";
 import { PRESET_CATALOG } from "./presets";
 import { RelatedBlueprints } from "./RelatedBlueprints";
+import { revokeActionSketches } from "./revoke";
 import { riskHintsForPlan } from "./riskHints";
-import type { LimitedPermissionPlan, LinkedAction } from "./types";
+import { planSeverity } from "./severity";
+import type { LimitedPermissionPlan } from "./types";
 import {
   AVOID_FOR_GREENFIELD,
   RECOMMENDED_PACKAGES,
@@ -28,8 +31,16 @@ export function PlanPlanner() {
 
   const errors = useMemo(() => validatePlan(plan), [plan]);
   const risks = useMemo(() => riskHintsForPlan(plan), [plan]);
+  const severity = useMemo(() => planSeverity(plan), [plan]);
   const installRows = useMemo(
     () => installActionSketches(account.trim() || "account", plan),
+    [account, plan]
+  );
+  const revokeRows = useMemo(
+    () =>
+      revokeActionSketches(account.trim() || "account", plan, {
+        deletePermission: true,
+      }),
     [account, plan]
   );
   const sketch = useMemo(
@@ -65,7 +76,18 @@ export function PlanPlanner() {
       await navigator.clipboard.writeText(
         exportPlanMarkdown(account.trim() || "account", plan)
       );
-      setMessage("Plan markdown copied (includes revocation checklist)");
+      setMessage("Plan markdown copied");
+    } catch {
+      setMessage("Clipboard unavailable");
+    }
+  };
+
+  const copyJson = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        exportPlanJson(account.trim() || "account", plan)
+      );
+      setMessage("Plan JSON copied (severity + install + revoke)");
     } catch {
       setMessage("Clipboard unavailable");
     }
@@ -163,13 +185,32 @@ export function PlanPlanner() {
             className="mt-1 w-full rounded-lg border border-white/15 bg-black/50 px-3 py-2 font-mono text-sm"
           />
         </label>
+        <p className="text-sm">
+          Severity:{" "}
+          <span
+            className={
+              severity.label === "critical" || severity.label === "high"
+                ? "text-red-300 font-mono"
+                : "text-emerald-300 font-mono"
+            }
+          >
+            {severity.score}/100 ({severity.label})
+          </span>
+        </p>
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
             className="px-3 py-2 rounded-lg text-sm bg-sky-700"
             onClick={copyMd}
           >
-            Copy plan markdown
+            Copy markdown
+          </button>
+          <button
+            type="button"
+            className="px-3 py-2 rounded-lg text-sm bg-sky-800"
+            onClick={copyJson}
+          >
+            Copy JSON
           </button>
           <button
             type="button"
@@ -203,7 +244,7 @@ export function PlanPlanner() {
                 className="text-[10px] underline opacity-60"
                 onClick={() => removeLink(i)}
               >
-                remove
+                cancel
               </button>
             </li>
           ))}
@@ -268,20 +309,14 @@ export function PlanPlanner() {
         <p className="text-[11px] opacity-70">{plan.riskNote}</p>
       </section>
 
-      <section className="rounded-2xl border border-white/10 bg-black/30 p-4 text-xs space-y-2 opacity-90">
-        <h2 className="font-semibold text-sm text-white">Revocation checklist</h2>
-        <ol className="list-decimal pl-5 space-y-1 leading-relaxed">
-          <li>Remove the limited key from the dApp / local storage.</li>
-          <li>
-            <code className="text-[10px]">unlinkauth</code> each linked action.
-          </li>
-          <li>
-            <code className="text-[10px]">updateauth</code> to drop the key or
-            permission.
-          </li>
-          <li>
-            Confirm with <code className="text-[10px]">get_account</code>.
-          </li>
+      <section className="rounded-2xl border border-red-500/20 bg-red-500/5 p-4 space-y-2">
+        <h2 className="font-semibold text-red-100 text-sm">Revoke sketch (not sent)</h2>
+        <ol className="list-decimal pl-5 text-xs space-y-1 font-mono text-red-100/80">
+          {revokeRows.map((row) => (
+            <li key={row.summary}>
+              {row.account}::{row.name} — {row.summary}
+            </li>
+          ))}
         </ol>
       </section>
 
