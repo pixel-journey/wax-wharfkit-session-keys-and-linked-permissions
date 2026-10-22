@@ -2,12 +2,11 @@
 
 > **Trust Label:** `educational-reference`  
 > **Verification:** [VERIFICATION-LOG.md](VERIFICATION-LOG.md)  
-> **Status:** ✅ Pass 4 complete  
-> **Parent Catalog:** [wax-ecosystem-blueprint-catalog](https://github.com/pixel-journey/wax-ecosystem-blueprint-catalog)  
-> **Cluster map:** [WHARFKIT-CLUSTER.md](WHARFKIT-CLUSTER.md)
+> **Status:** ✅ Pass 5 (post-complete deepen)  
+> **Architecture:** [ARCHITECTURE.md](ARCHITECTURE.md)  
+> **Cluster:** [WHARFKIT-CLUSTER.md](WHARFKIT-CLUSTER.md)
 
-Limited dApp **session keys** = custom permission + `linkauth`.  
-**Not** the same as WharfKit **Session Kit** (wallet login / `transact`).
+Limited dApp **session keys** = custom permission + `linkauth` — not WharfKit Session Kit login.
 
 ## Quick start
 
@@ -19,12 +18,12 @@ npm install && npm test && npm run dev
 
 | Piece | Role |
 |-------|------|
-| Pure plans + validation | Educational models |
-| Plan planner UI | Edit linked actions |
-| Markdown export | Plan + revocation checklist |
-| WharfKit notes | Prefer Session/Account kits; avoid eosjs/UAL/Anchor-Link-alone |
+| Plans + presets | Gameplay, claim-only, vote (caution) |
+| Plan planner | Edit links, export markdown |
+| Revocation checklist | unlinkauth → updateauth → get_account |
+| Architecture | Security boundary diagram |
 
-No live chain writes from this tree.
+Prefer **WharfKit**; avoid eosjs / UAL / Anchor-Link-alone for greenfield.
 
 ## License
 
