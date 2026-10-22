@@ -2,11 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { exportPlanMarkdown } from "./exportPlan";
-import {
-  demoGameplayPlan,
-  installActionSketches,
-  validatePlan,
-} from "./plans";
+import { installActionSketches, validatePlan } from "./plans";
+import { PRESET_CATALOG } from "./presets";
 import { RelatedBlueprints } from "./RelatedBlueprints";
 import type { LimitedPermissionPlan, LinkedAction } from "./types";
 import {
@@ -17,7 +14,9 @@ import {
 } from "./wharfNotes";
 
 export function PlanPlanner() {
-  const [plan, setPlan] = useState<LimitedPermissionPlan>(() => demoGameplayPlan());
+  const [plan, setPlan] = useState<LimitedPermissionPlan>(() =>
+    PRESET_CATALOG[0].build()
+  );
   const [account, setAccount] = useState("alice.wam");
   const [newContract, setNewContract] = useState("pxfarmer.game");
   const [newAction, setNewAction] = useState("claim");
@@ -99,6 +98,22 @@ export function PlanPlanner() {
       </section>
 
       <section className="rounded-2xl border border-white/10 bg-black/40 p-4 space-y-3">
+        <p className="text-xs opacity-70">Presets</p>
+        <div className="flex flex-wrap gap-2">
+          {PRESET_CATALOG.map((p) => (
+            <button
+              key={p.id}
+              type="button"
+              className="px-2 py-1 rounded-lg text-xs bg-white/10"
+              onClick={() => {
+                setPlan(p.build());
+                setMessage(`Loaded preset: ${p.label}`);
+              }}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
         <label className="block text-xs opacity-70">
           Account (for install sketches)
           <input
@@ -127,22 +142,13 @@ export function PlanPlanner() {
             className="mt-1 w-full rounded-lg border border-white/15 bg-black/50 px-3 py-2 font-mono text-sm"
           />
         </label>
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            className="px-3 py-2 rounded-lg text-sm bg-white/10"
-            onClick={() => setPlan(demoGameplayPlan())}
-          >
-            Reset demo gameplay plan
-          </button>
-          <button
-            type="button"
-            className="px-3 py-2 rounded-lg text-sm bg-sky-700"
-            onClick={copyMd}
-          >
-            Copy plan markdown
-          </button>
-        </div>
+        <button
+          type="button"
+          className="px-3 py-2 rounded-lg text-sm bg-sky-700"
+          onClick={copyMd}
+        >
+          Copy plan markdown
+        </button>
       </section>
 
       <section className="rounded-2xl border border-white/10 bg-black/30 p-4 space-y-3">
@@ -214,11 +220,10 @@ export function PlanPlanner() {
         <ol className="list-decimal pl-5 space-y-1 leading-relaxed">
           <li>Remove the limited key from the dApp / local storage.</li>
           <li>
-            <code className="text-[10px]">unlinkauth</code> each linked action (or ops
-            bulk policy).
+            <code className="text-[10px]">unlinkauth</code> each linked action.
           </li>
           <li>
-            <code className="text-[10px]">updateauth</code> to drop the key or the
+            <code className="text-[10px]">updateauth</code> to drop the key or
             permission.
           </li>
           <li>
