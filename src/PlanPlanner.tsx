@@ -1,10 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { probeAccountPermissions } from "./accountProbe";
+import { comparePresetSeverities } from "./comparePresets";
 import { exportPlanJson } from "./exportJson";
 import { exportPlanMarkdown } from "./exportPlan";
 import { matchPlanToProbe } from "./matchProbe";
+import { clearPlanDraft, loadPlanDraft, savePlanDraft } from "./planStorage";
 import { installActionSketches, validatePlan } from "./plans";
 import { PRESET_CATALOG } from "./presets";
 import { RelatedBlueprints } from "./RelatedBlueprints";
@@ -31,9 +33,19 @@ export function PlanPlanner() {
   const [matchLines, setMatchLines] = useState<string[]>([]);
   const [probing, setProbing] = useState(false);
 
+  useEffect(() => {
+    const loaded = loadPlanDraft();
+    if (loaded.ok && loaded.value) {
+      setAccount(loaded.value.account);
+      setPlan(loaded.value.plan);
+      setMessage("Restored plan draft from localStorage");
+    }
+  }, []);
+
   const errors = useMemo(() => validatePlan(plan), [plan]);
   const risks = useMemo(() => riskHintsForPlan(plan), [plan]);
   const severity = useMemo(() => planSeverity(plan), [plan]);
+  const presetCompare = useMemo(() => comparePresetSeverities(), []);
   const installRows = useMemo(
     () => installActionSketches(account.trim() || "account", plan),
     [account, plan]
@@ -55,6 +67,11 @@ export function PlanPlanner() {
       }),
     [account, plan.permissionName]
   );
+
+  const persistNote = (note: string) => {
+    const r = savePlanDraft(account.trim() || "account", plan);
+    setMessage(r.ok ? note : `${note} · storage: ${r.reason}`);
+  };
 
   const addLink = () => {
     setPlan((p) => ({
@@ -89,7 +106,7 @@ export function PlanPlanner() {
       await navigator.clipboard.writeText(
         exportPlanJson(account.trim() || "account", plan)
       );
-      setMessage("Plan JSON copied (severity + install + revoke)");
+      setMessage("Plan JSON copied");
     } catch {
       setMessage("Clipboard unavailable");
     }
@@ -111,8 +128,7 @@ export function PlanPlanner() {
     setProbeText(
       `Live permissions on ${r.account}: ${names || "(none listed)"}`
     );
-    const match = matchPlanToProbe(plan, r.permissions);
-    setMatchLines(match.messages);
+    setMatchLines(matchPlanToProbe(plan, r.permissions).messages);
   };
 
   return (
@@ -219,6 +235,25 @@ export function PlanPlanner() {
           </button>
           <button
             type="button"
+            className="px-3 py-2 rounded-lg text-sm bg-violet-700"
+            onClick={() =>
+              persistNote("Draft saved to localStorage (not a chain key)")
+            }
+          >
+            Save draft
+          </button>
+          <button
+            type="button"
+            className="px-3 py-2 rounded-lg text-sm bg-white/10"
+            onClick={() => {
+              clearPlanDraft();
+              setMessage("Draft cleared from localStorage");
+            }}
+          >
+            Clear draft
+          </button>
+          <button
+            type="button"
             className="px-3 py-2 rounded-lg text-sm bg-white/10"
             disabled={probing}
             onClick={runProbe}
@@ -238,6 +273,26 @@ export function PlanPlanner() {
             ))}
           </ul>
         )}
+      </section>
+
+      <section className="rounded-2xl border border-white/10 bg-black/30 p-4 space-y-2">
+        <h2 className="font-semibold text-sm text-emerald-300">
+          Preset severity comparison
+        </h2>
+        <ul className="text-xs font-mono space-y-1">
+          {presetCompare.map((row) => (
+            <li key={row.id} className="flex justify-between gap-2">
+              <span>{row.label}</span>
+              <span
+                className={
+                  row.severity.score >= 45 ? "text-red-300" : "text-white/60"
+                }
+              >
+                {row.severity.score} ({row.severity.label})
+              </span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="rounded-2xl border border-white/10 bg-black/30 p-4 space-y-3">
