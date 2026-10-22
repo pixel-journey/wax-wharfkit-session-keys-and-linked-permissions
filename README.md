@@ -2,7 +2,7 @@
 
 > **Trust Label:** `educational-reference`  
 > **Verification:** [VERIFICATION-LOG.md](VERIFICATION-LOG.md)  
-> **Status:** ✅ Pass 7 (severity · revoke sketch · JSON)  
+> **Status:** ✅ Pass 8 (probe match)  
 > **Architecture:** [ARCHITECTURE.md](ARCHITECTURE.md)
 
 Limited dApp **session keys** = custom permission + `linkauth` — not Session Kit login.
@@ -17,11 +17,10 @@ npm install && npm test && npm run dev
 
 | Piece | Role |
 |-------|------|
-| Presets + risk hints | Including transfer danger |
-| `planSeverity` | 0–100 heuristic score |
-| Install / revoke sketches | updateauth · linkauth · unlinkauth · deleteauth |
-| Export | Markdown + JSON |
-| Soft-fail `get_account` | Optional live permission names |
+| Risk + severity | Heuristic safety |
+| Install / revoke sketches | Not broadcast |
+| Soft-fail `get_account` | List permission names |
+| `matchPlanToProbe` | Is planned perm present? parent match? |
 
 Prefer **WharfKit**; avoid eosjs / UAL / Anchor-Link-alone.
 
