@@ -2,11 +2,12 @@
 
 > **Trust Label:** `educational-reference`  
 > **Verification:** [VERIFICATION-LOG.md](VERIFICATION-LOG.md)  
-> **Status:** 🔄 Pass 3 — export + revocation + related  
+> **Status:** ✅ Pass 4 complete  
 > **Parent Catalog:** [wax-ecosystem-blueprint-catalog](https://github.com/pixel-journey/wax-ecosystem-blueprint-catalog)  
 > **Cluster map:** [WHARFKIT-CLUSTER.md](WHARFKIT-CLUSTER.md)
 
-Limited dApp **session keys** = custom permission + `linkauth`, not WharfKit Session Kit login.
+Limited dApp **session keys** = custom permission + `linkauth`.  
+**Not** the same as WharfKit **Session Kit** (wallet login / `transact`).
 
 ## Quick start
 
@@ -14,16 +15,16 @@ Limited dApp **session keys** = custom permission + `linkauth`, not WharfKit Ses
 npm install && npm test && npm run dev
 ```
 
-## Pass 3 surface
+## Surface
 
 | Piece | Role |
 |-------|------|
-| Plan validation | Pure |
-| Plan planner UI | Edit links |
-| `exportPlanMarkdown` | Copy plan + revocation |
-| Related blueprints | Visualizer, auditor, hardware |
+| Pure plans + validation | Educational models |
+| Plan planner UI | Edit linked actions |
+| Markdown export | Plan + revocation checklist |
+| WharfKit notes | Prefer Session/Account kits; avoid eosjs/UAL/Anchor-Link-alone |
 
-No live `updateauth` / broadcast.
+No live chain writes from this tree.
 
 ## License
 
