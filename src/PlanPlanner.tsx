@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { probeAccountPermissions } from "./accountProbe";
 import { exportPlanJson } from "./exportJson";
 import { exportPlanMarkdown } from "./exportPlan";
+import { matchPlanToProbe } from "./matchProbe";
 import { installActionSketches, validatePlan } from "./plans";
 import { PRESET_CATALOG } from "./presets";
 import { RelatedBlueprints } from "./RelatedBlueprints";
@@ -27,6 +28,7 @@ export function PlanPlanner() {
   const [newAction, setNewAction] = useState("claim");
   const [message, setMessage] = useState<string | null>(null);
   const [probeText, setProbeText] = useState<string | null>(null);
+  const [matchLines, setMatchLines] = useState<string[]>([]);
   const [probing, setProbing] = useState(false);
 
   const errors = useMemo(() => validatePlan(plan), [plan]);
@@ -96,6 +98,7 @@ export function PlanPlanner() {
   const runProbe = async () => {
     setProbing(true);
     setProbeText(null);
+    setMatchLines([]);
     const r = await probeAccountPermissions(account);
     setProbing(false);
     if (!r.ok) {
@@ -108,6 +111,8 @@ export function PlanPlanner() {
     setProbeText(
       `Live permissions on ${r.account}: ${names || "(none listed)"}`
     );
+    const match = matchPlanToProbe(plan, r.permissions);
+    setMatchLines(match.messages);
   };
 
   return (
@@ -218,13 +223,20 @@ export function PlanPlanner() {
             disabled={probing}
             onClick={runProbe}
           >
-            {probing ? "Probing…" : "Probe get_account"}
+            {probing ? "Probing…" : "Probe + match plan"}
           </button>
         </div>
         {probeText && (
           <p className="text-[11px] opacity-70 font-mono leading-relaxed">
             {probeText}
           </p>
+        )}
+        {matchLines.length > 0 && (
+          <ul className="text-[11px] space-y-1 text-sky-200/80">
+            {matchLines.map((m) => (
+              <li key={m}>{m}</li>
+            ))}
+          </ul>
         )}
       </section>
 
@@ -244,7 +256,7 @@ export function PlanPlanner() {
                 className="text-[10px] underline opacity-60"
                 onClick={() => removeLink(i)}
               >
-                cancel
+                remove
               </button>
             </li>
           ))}
