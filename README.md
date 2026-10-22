@@ -2,18 +2,11 @@
 
 > **Trust Label:** `educational-reference`  
 > **Verification:** [VERIFICATION-LOG.md](VERIFICATION-LOG.md)  
-> **Status:** 🔄 Pass 2 — interactive plan planner  
+> **Status:** 🔄 Pass 3 — export + revocation + related  
 > **Parent Catalog:** [wax-ecosystem-blueprint-catalog](https://github.com/pixel-journey/wax-ecosystem-blueprint-catalog)  
 > **Cluster map:** [WHARFKIT-CLUSTER.md](WHARFKIT-CLUSTER.md)
 
-Educational blueprint for **limited dApp “session keys”** on WAX / Antelope — **not** the same thing as WharfKit **Session Kit** login sessions.
-
-## Two different “sessions”
-
-| Term | What it is |
-|------|------------|
-| **WharfKit Session** | App ↔ wallet after `login` / `restore`. Wallet signs each `transact`. |
-| **Limited permission / “session key”** | Custom permission + key, **`linkauth`**-scoped to specific actions. App can sign those without main-wallet prompts. |
+Limited dApp **session keys** = custom permission + `linkauth`, not WharfKit Session Kit login.
 
 ## Quick start
 
@@ -21,15 +14,16 @@ Educational blueprint for **limited dApp “session keys”** on WAX / Antelope 
 npm install && npm test && npm run dev
 ```
 
-## Pass 2 surface
+## Pass 3 surface
 
 | Piece | Role |
 |-------|------|
-| `validatePlan` / `installActionSketches` | Pure models |
-| `PlanPlanner` | Edit links, see install sketch |
-| `wharfNotes` | Recommended packages vs eosjs/UAL/Anchor-Link |
+| Plan validation | Pure |
+| Plan planner UI | Edit links |
+| `exportPlanMarkdown` | Copy plan + revocation |
+| Related blueprints | Visualizer, auditor, hardware |
 
-Still **no** live `updateauth` / broadcast from this tree.
+No live `updateauth` / broadcast.
 
 ## License
 
