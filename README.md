@@ -1,12 +1,9 @@
 # wax-wharfkit-session-keys-and-linked-permissions
 
-> **Trust Label:** `educational-reference`  
-> **Verification:** [VERIFICATION-LOG.md](VERIFICATION-LOG.md)  
-> **Status:** ✅ Pass 10 complete (education track capped)  
-> **Architecture:** [ARCHITECTURE.md](ARCHITECTURE.md)  
-> **Cluster:** [WHARFKIT-CLUSTER.md](WHARFKIT-CLUSTER.md)
+> **Trust label:** `educational-reference`  
+> **Status:** Passes **1–10** education + **Pass 11** live WharfKit tier
 
-Limited dApp **session keys** = custom permission + `linkauth` — **not** WharfKit Session Kit login.
+Limited dApp **session keys** = custom permission + `linkauth` — **not** the same as WharfKit Session Kit login (though we use Session Kit to *sign* authority txs).
 
 ## Quick start
 
@@ -14,20 +11,13 @@ Limited dApp **session keys** = custom permission + `linkauth` — **not** Wharf
 npm install && npm test && npm run dev
 ```
 
-## Surface (Passes 1–10)
+## Surface
 
-| Area | Features |
-|------|----------|
-| Plans | Validate, presets, severity, risk hints |
-| Sketches | Install (`updateauth`/`linkauth`) · revoke (`unlinkauth`/`deleteauth`) |
-| Live optional | Soft-fail `get_account` + match plan permission |
-| Export | Markdown · JSON · localStorage draft |
-| API | `src/index.ts` pure exports |
+| Track | Features |
+|-------|----------|
+| Education (1–10) | Plans, presets, risk, probes, export, drafts |
+| Live (11+) | Confirm-gated install/revoke via **Anchor** / **Cloud Wallet** |
 
-Prefer **WharfKit**. Avoid **eosjs** / **UAL** / standalone **Anchor Link** for greenfield.
+See [POLICY.md](./POLICY.md) · [ARCHITECTURE.md](./ARCHITECTURE.md)
 
-No live authority writes from this tree.
-
-## License
-
-MIT — **Pixel Journey**
+MIT — Pixel Journey
