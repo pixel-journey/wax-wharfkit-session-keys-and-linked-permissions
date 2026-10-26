@@ -1,9 +1,9 @@
 # Verification Log
 
-**Updated:** 2026-10-26 (Pass 13)
+**Updated:** 2026-10-26 (Pass 14 freeze)
 
 | Claim | Status |
 | --- | --- |
-| match linked_actions | matchProbe.test.ts |
-| preflight | preflight.test.ts |
+| Presets / plans / preflight | unit |
+| Live install | confirm-gated WharfKit |
 | CI | test + typecheck + build |

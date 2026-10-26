@@ -28,6 +28,34 @@ export function presetRankingVote(): LimitedPermissionPlan {
   };
 }
 
+/** Harvest + claim without transfer. */
+export function presetHarvestLoop(): LimitedPermissionPlan {
+  return {
+    permissionName: "gameplay",
+    parent: "active",
+    publicKey: "PUB_K1_EXAMPLE_HARVEST",
+    linkedActions: [
+      { contract: "pxfarmer.game", action: "claim" },
+      { contract: "pxfarmer.game", action: "harvest" },
+      { contract: "pxfarmer.game", action: "plant" },
+    ],
+    riskNote:
+      "Routine farm loop only. Keep upgrades, withdrawals, and token moves on active.",
+  };
+}
+
+/** Read-shaped / soft action surface (illustrative). */
+export function presetLeaderboardPing(): LimitedPermissionPlan {
+  return {
+    permissionName: "ping",
+    parent: "active",
+    publicKey: "PUB_K1_EXAMPLE_PING",
+    linkedActions: [{ contract: "hot.pxj", action: "ping" }],
+    riskNote:
+      "Minimal surface for presence/leaderboard pings. Prefer server-side if no on-chain need.",
+  };
+}
+
 export const PRESET_CATALOG: Array<{
   id: string;
   label: string;
@@ -35,5 +63,7 @@ export const PRESET_CATALOG: Array<{
 }> = [
   { id: "gameplay", label: "PxFarmer gameplay", build: demoGameplayPlan },
   { id: "claim", label: "Claim only", build: presetClaimOnly },
+  { id: "harvest", label: "Harvest loop", build: presetHarvestLoop },
+  { id: "ping", label: "Leaderboard ping", build: presetLeaderboardPing },
   { id: "vote", label: "Vote (caution)", build: presetRankingVote },
 ];

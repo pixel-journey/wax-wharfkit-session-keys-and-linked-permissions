@@ -1,9 +1,8 @@
 # Policy
 
-**Limited permission plans** are pure education (validate, risk, export).
-
-**Live authority changes** (`updateauth` / `linkauth` / `unlinkauth` / `deleteauth`) are in-scope only via confirm-gated WharfKit (`LiveAuthPanel`), wallets **Anchor** + **My Cloud Wallet** only.
-
-- No silent broadcast from tests
-- No browser storage of owner/active private keys
-- Placeholder `PUB_K1_EXAMPLE…` keys are blocked from live broadcast
+- Educational reference for limited permissions + `linkauth`
+- Prefer **WharfKit** Session Kit + Anchor / Cloud Wallet over eosjs / UAL / standalone Anchor Link
+- Never store **owner** keys in the browser
+- Treat limited private keys as **compromisable**; revoke when leaked
+- Avoid linking `eosio.token::transfer` unless the product truly requires it
+- Live install/revoke is confirm-gated; practice on throwaway accounts first

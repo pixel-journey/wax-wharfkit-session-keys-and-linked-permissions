@@ -28,6 +28,16 @@ const LINKS = [
     href: "https://github.com/pixel-journey/wax-social-recovery-and-key-backup-tools",
     why: "Owner/active recovery is separate from disposable gameplay keys.",
   },
+  {
+    name: "wax-multi-sig-proposal-builder-and-simulator",
+    href: "https://github.com/pixel-journey/wax-multi-sig-proposal-builder-and-simulator",
+    why: "Team accounts may install limited perms via msig instead of a single active key.",
+  },
+  {
+    name: "wax-safe-key-rotation-assistant",
+    href: "https://github.com/pixel-journey/wax-safe-key-rotation-assistant",
+    why: "Rotate compromised limited keys without touching owner.",
+  },
 ] as const;
 
 export function RelatedBlueprints({ className = "" }: { className?: string }) {
@@ -41,8 +51,8 @@ export function RelatedBlueprints({ className = "" }: { className?: string }) {
         Related blueprints
       </h3>
       <p className="text-sm text-white/60 mb-4">
-        Limited keys are one slice of permission hygiene. Pair with audit and
-        hardware patterns before mainnet.
+        Limited keys are one slice of permission hygiene. Pair with audit,
+        hardware, and recovery patterns before mainnet.
       </p>
       <ul className="space-y-3">
         {LINKS.map((l) => (

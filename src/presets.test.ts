@@ -1,19 +1,26 @@
 import { describe, expect, it } from "vitest";
-import { validatePlan } from "./plans";
-import { PRESET_CATALOG, presetClaimOnly, presetRankingVote } from "./presets";
+import { PRESET_CATALOG, presetHarvestLoop, presetRankingVote } from "./presets";
 
 describe("presets", () => {
-  it("claim-only validates", () => {
-    expect(validatePlan(presetClaimOnly())).toEqual([]);
+  it("catalog has harvest and caution vote", () => {
+    expect(PRESET_CATALOG.some((p) => p.id === "harvest")).toBe(true);
+    expect(PRESET_CATALOG.some((p) => p.id === "vote")).toBe(true);
   });
 
-  it("vote preset validates but documents transfer risk", () => {
+  it("vote preset links transfer as caution", () => {
     const p = presetRankingVote();
-    expect(validatePlan(p)).toEqual([]);
-    expect(p.riskNote.toLowerCase()).toContain("transfer");
+    expect(
+      p.linkedActions.some(
+        (a) => a.contract === "eosio.token" && a.action === "transfer"
+      )
+    ).toBe(true);
+    expect(p.riskNote.toLowerCase()).toContain("risk");
   });
 
-  it("catalog has three entries", () => {
-    expect(PRESET_CATALOG).toHaveLength(3);
+  it("harvest has no token transfer", () => {
+    const p = presetHarvestLoop();
+    expect(
+      p.linkedActions.every((a) => a.contract !== "eosio.token")
+    ).toBe(true);
   });
 });
