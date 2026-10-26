@@ -1,9 +1,10 @@
 # Verification Log
 
-**Updated:** 2026-10-26 (Pass 11)
+**Updated:** 2026-10-26 (Pass 12)
 
 | Claim | Status |
 | --- | --- |
-| Plans / risk / export | unit tests |
-| Install/revoke action sequences | authActions.test.ts |
-| Live broadcast | host + wallet — not CI |
+| Education engines | vitest |
+| Install/revoke sequences | authActions.test.ts |
+| CI | test + typecheck + build |
+| Live authority txs | host + wallet only |

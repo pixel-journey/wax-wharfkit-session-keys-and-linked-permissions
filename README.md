@@ -1,9 +1,9 @@
 # wax-wharfkit-session-keys-and-linked-permissions
 
 > **Trust label:** `educational-reference`  
-> **Status:** Passes **1–10** education + **Pass 11** live WharfKit tier
+> **Status:** Passes **1–10** education + **11–12** live WharfKit tier (2026-10-26)
 
-Limited dApp **session keys** = custom permission + `linkauth` — **not** the same as WharfKit Session Kit login (though we use Session Kit to *sign* authority txs).
+Limited dApp **session keys** = custom permission + `linkauth` (distinct from WharfKit Session Kit login).
 
 ## Quick start
 
@@ -11,13 +11,11 @@ Limited dApp **session keys** = custom permission + `linkauth` — **not** the s
 npm install && npm test && npm run dev
 ```
 
-## Surface
-
 | Track | Features |
 |-------|----------|
-| Education (1–10) | Plans, presets, risk, probes, export, drafts |
-| Live (11+) | Confirm-gated install/revoke via **Anchor** / **Cloud Wallet** |
+| Education | Plans, presets, risk, probe, export, drafts |
+| Live | Confirm-gated install/revoke · **Anchor** + **Cloud Wallet** · same plan state |
 
-See [POLICY.md](./POLICY.md) · [ARCHITECTURE.md](./ARCHITECTURE.md)
+[POLICY.md](./POLICY.md) · [DEPLOY.md](./DEPLOY.md)
 
 MIT — Pixel Journey

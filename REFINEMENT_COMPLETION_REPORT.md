@@ -1,14 +1,15 @@
-# Refinement — wax-wharfkit-session-keys-and-linked-permissions
+# Refinement — session keys
 
 **Updated:** 2026-10-26
 
 | Pass | Scope |
 |------|--------|
-| 1–10 | Education track (capped) |
-| **11** | `authActions`, SessionKit (Anchor+Cloud), `LiveAuthPanel` confirm-gated install/revoke |
+| 1–10 | Education |
+| 11 | authActions + LiveAuthPanel + SessionKit |
+| **12** | Live panel wired to PlanPlanner state; CI; DEPLOY; barrel exports |
 
-Gap vs multi-sig "complete": CI/Tailwind/DEPLOY polish, form UX — next passes.
+Still optional: Tailwind formalization, richer preflight of linkauth on-chain.
 
 ```bash
-npm install && npm test
+npm install && npm test && npm run build
 ```

@@ -1,3 +1,12 @@
+export {
+  buildDeleteAuthAction,
+  buildInstallSequence,
+  buildLinkAuthAction,
+  buildRevokeSequence,
+  buildUnlinkAuthAction,
+  buildUpdateAuthAction,
+} from "./authActions";
+export type { Auth, ChainAction } from "./authActions";
 export { probeAccountPermissions } from "./accountProbe";
 export type { AccountProbeResult, PermissionNameRow } from "./accountProbe";
 export { comparePresetSeverities } from "./comparePresets";

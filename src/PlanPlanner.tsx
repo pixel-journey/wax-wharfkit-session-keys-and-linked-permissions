@@ -5,6 +5,7 @@ import { probeAccountPermissions } from "./accountProbe";
 import { comparePresetSeverities } from "./comparePresets";
 import { exportPlanJson } from "./exportJson";
 import { exportPlanMarkdown } from "./exportPlan";
+import { LiveAuthPanel } from "./LiveAuthPanel";
 import { matchPlanToProbe } from "./matchProbe";
 import { clearPlanDraft, loadPlanDraft, savePlanDraft } from "./planStorage";
 import { installActionSketches, validatePlan } from "./plans";
@@ -141,8 +142,8 @@ export function PlanPlanner() {
           Limited permission planner
         </h1>
         <p className="text-sm opacity-60 mt-2">
-          Design a dApp “session key” (custom permission + linkauth). Not a live
-          updateauth tool.
+          Design a dApp “session key” (custom permission + linkauth). Optional
+          confirm-gated live install/revoke via Anchor / Cloud Wallet below.
         </p>
       </header>
 
@@ -197,7 +198,7 @@ export function PlanPlanner() {
           />
         </label>
         <label className="block text-xs opacity-70">
-          Public key (placeholder OK in education)
+          Public key (real PUB_K1 required for live broadcast)
           <input
             value={plan.publicKey}
             onChange={(e) =>
@@ -386,6 +387,8 @@ export function PlanPlanner() {
           ))}
         </ol>
       </section>
+
+      <LiveAuthPanel account={account.trim() || "alice.wam"} plan={plan} />
 
       {message && (
         <p className="text-xs text-emerald-200/80" role="status">
