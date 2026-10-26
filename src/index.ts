@@ -8,11 +8,18 @@ export {
 } from "./authActions";
 export type { Auth, ChainAction } from "./authActions";
 export { probeAccountPermissions } from "./accountProbe";
-export type { AccountProbeResult, PermissionNameRow } from "./accountProbe";
+export type {
+  AccountProbeResult,
+  LinkedActionRow,
+  PermissionNameRow,
+} from "./accountProbe";
 export { comparePresetSeverities } from "./comparePresets";
 export { exportPlanJson } from "./exportJson";
 export { exportPlanMarkdown } from "./exportPlan";
 export { matchPlanToProbe } from "./matchProbe";
+export type { MatchResult } from "./matchProbe";
+export { preflightPlan } from "./preflight";
+export type { PreflightResult } from "./preflight";
 export {
   authorityFromPlan,
   demoGameplayPlan,

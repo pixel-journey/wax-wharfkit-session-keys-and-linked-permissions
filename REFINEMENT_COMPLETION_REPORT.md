@@ -1,14 +1,12 @@
-# Refinement — session keys
-
-**Updated:** 2026-10-26
+# Refinement — session keys through Pass 13
 
 | Pass | Scope |
 |------|--------|
 | 1–10 | Education |
-| 11 | authActions + LiveAuthPanel + SessionKit |
-| **12** | Live panel wired to PlanPlanner state; CI; DEPLOY; barrel exports |
+| 11–12 | Live WharfKit + planner wiring + CI |
+| **13** | `linked_actions` match, `preflightPlan`, Tailwind |
 
-Still optional: Tailwind formalization, richer preflight of linkauth on-chain.
+Educational scope is at multi-sig parity for this topic.
 
 ```bash
 npm install && npm test && npm run build

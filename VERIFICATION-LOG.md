@@ -1,10 +1,9 @@
 # Verification Log
 
-**Updated:** 2026-10-26 (Pass 12)
+**Updated:** 2026-10-26 (Pass 13)
 
 | Claim | Status |
 | --- | --- |
-| Education engines | vitest |
-| Install/revoke sequences | authActions.test.ts |
+| match linked_actions | matchProbe.test.ts |
+| preflight | preflight.test.ts |
 | CI | test + typecheck + build |
-| Live authority txs | host + wallet only |

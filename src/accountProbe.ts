@@ -1,11 +1,16 @@
 /**
- * Optional soft-fail probe: fetch get_account and list permission names.
- * Never throws to callers; educational — not a full authority auditor.
+ * Soft-fail get_account probe: permission names + linked_actions when present.
  */
+
+export interface LinkedActionRow {
+  account: string;
+  action: string;
+}
 
 export interface PermissionNameRow {
   perm_name: string;
   parent: string;
+  linked_actions?: LinkedActionRow[];
 }
 
 export interface AccountProbeResult {
@@ -35,11 +40,21 @@ export async function probeAccountPermissions(
     }
     const data = (await res.json()) as {
       account_name?: string;
-      permissions?: Array<{ perm_name: string; parent: string }>;
+      permissions?: Array<{
+        perm_name: string;
+        parent: string;
+        linked_actions?: Array<{ account?: string; action?: string }>;
+      }>;
     };
     const permissions = (data.permissions ?? []).map((p) => ({
       perm_name: String(p.perm_name),
       parent: String(p.parent ?? ""),
+      linked_actions: (p.linked_actions ?? [])
+        .filter((l) => l.account && l.action)
+        .map((l) => ({
+          account: String(l.account),
+          action: String(l.action),
+        })),
     }));
     return {
       ok: true,

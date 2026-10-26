@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { demoGameplayPlan } from "./plans";
 import { matchPlanToProbe } from "./matchProbe";
+import { demoGameplayPlan } from "./plans";
 
 describe("matchPlanToProbe", () => {
   it("detects missing permission", () => {
@@ -10,12 +10,20 @@ describe("matchPlanToProbe", () => {
     expect(r.permissionPresent).toBe(false);
   });
 
-  it("finds gameplay under active", () => {
-    const r = matchPlanToProbe(demoGameplayPlan(), [
-      { perm_name: "active", parent: "owner" },
-      { perm_name: "gameplay", parent: "active" },
+  it("counts linked_actions matches", () => {
+    const plan = demoGameplayPlan();
+    const r = matchPlanToProbe(plan, [
+      {
+        perm_name: "gameplay",
+        parent: "active",
+        linked_actions: [
+          { account: "pxfarmer.game", action: "claim" },
+          { account: "pxfarmer.game", action: "harvest" },
+        ],
+      },
     ]);
     expect(r.permissionPresent).toBe(true);
-    expect(r.parentMatches).toBe(true);
+    expect(r.linkedMatched).toBe(2);
+    expect(r.linkedMissing).toContain("pxfarmer.game::plant");
   });
 });
