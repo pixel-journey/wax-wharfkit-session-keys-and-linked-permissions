@@ -7,7 +7,7 @@ export function presetClaimOnly(): LimitedPermissionPlan {
     permissionName: "claim",
     parent: "active",
     publicKey: "PUB_K1_EXAMPLE_CLAIM_ONLY",
-    linkedActions: [{ contract: "pxfarmer.game", action: "claim" }],
+    linkedActions: [{ contract: "pxfarm.game", action: "claim" }],
     riskNote:
       "Claim-only link. Still revoke if the key leaks; never reuse for transfer.",
   };
@@ -35,9 +35,9 @@ export function presetHarvestLoop(): LimitedPermissionPlan {
     parent: "active",
     publicKey: "PUB_K1_EXAMPLE_HARVEST",
     linkedActions: [
-      { contract: "pxfarmer.game", action: "claim" },
-      { contract: "pxfarmer.game", action: "harvest" },
-      { contract: "pxfarmer.game", action: "plant" },
+      { contract: "pxfarm.game", action: "claim" },
+      { contract: "pxfarm.game", action: "harvest" },
+      { contract: "pxfarm.game", action: "plant" },
     ],
     riskNote:
       "Routine farm loop only. Keep upgrades, withdrawals, and token moves on active.",

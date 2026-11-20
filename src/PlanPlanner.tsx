@@ -27,7 +27,7 @@ export function PlanPlanner() {
     PRESET_CATALOG[0].build()
   );
   const [account, setAccount] = useState("alice.wam");
-  const [newContract, setNewContract] = useState("pxfarmer.game");
+  const [newContract, setNewContract] = useState("pxfarm.game");
   const [newAction, setNewAction] = useState("claim");
   const [message, setMessage] = useState<string | null>(null);
   const [probeText, setProbeText] = useState<string | null>(null);

@@ -41,9 +41,9 @@ export function demoGameplayPlan(): LimitedPermissionPlan {
     parent: "active",
     publicKey: "PUB_K1_EXAMPLE_DO_NOT_USE_ON_MAINNET",
     linkedActions: [
-      { contract: "pxfarmer.game", action: "claim" },
-      { contract: "pxfarmer.game", action: "harvest" },
-      { contract: "pxfarmer.game", action: "plant" },
+      { contract: "pxfarm.game", action: "claim" },
+      { contract: "pxfarm.game", action: "harvest" },
+      { contract: "pxfarm.game", action: "plant" },
     ],
     riskNote:
       "App may sign only linked actions. Keep owner/active offline or in a hardware wallet. Revoke via unlinkauth/updateauth if the key leaks.",

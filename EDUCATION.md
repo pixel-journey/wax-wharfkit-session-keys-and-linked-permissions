@@ -1,5 +1,8 @@
 # Limited session keys on WAX / Antelope
 
+> **Rung:** `npm test` passes. Plans are unsigned. The demo contract is `pxfarm.game` (11 characters). An Antelope name is at most 12. The longer spelling with `farmer` in the middle is 13 and the name rule refuses it.  
+> Official model: [WAX permissions](https://docs.wax.io/build/core-concepts/permissions). Install path: [WharfKit](https://wharfkit.com/).
+
 ## What “session key” means here
 
 A **limited dApp session key** is **not** a WharfKit Session object alone. It is an **on-chain** pattern:
@@ -25,8 +28,8 @@ WharfKit **Session Kit** is how you **install** those links (once, with `active`
 ```
 active signs:
   updateauth  → permission gameplay (key = PUB_session)
-  linkauth    → pxfarmer.game::claim  → gameplay
-  linkauth    → pxfarmer.game::harvest → gameplay
+  linkauth    → pxfarm.game::claim  → gameplay
+  linkauth    → pxfarm.game::harvest → gameplay
 
 Later, dApp uses private session key only for those actions.
 Revoke: unlinkauth / updateauth delete — again with active.

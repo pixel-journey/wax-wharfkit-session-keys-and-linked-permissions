@@ -16,4 +16,8 @@ npm install && npm test && npm run build && npm run dev
 
 [EDUCATION.md](./EDUCATION.md) · [POLICY.md](./POLICY.md) · [WHARFKIT-CLUSTER.md](./WHARFKIT-CLUSTER.md)
 
+Companions: [auditor](https://github.com/pixel-journey/wax-account-permission-auditor) · [visualizer](https://github.com/pixel-journey/wax-permission-visualizer-and-editor) · [key rotation](https://github.com/pixel-journey/wax-safe-key-rotation-assistant)
+
+Official: [WAX permissions](https://docs.wax.io/build/core-concepts/permissions) · [WharfKit](https://wharfkit.com/). Demo contract `pxfarm.game` fits the 12-character name rule. Plans are unsigned until a wallet confirms them.
+
 MIT — Pixel Journey

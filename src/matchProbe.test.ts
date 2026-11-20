@@ -17,13 +17,13 @@ describe("matchPlanToProbe", () => {
         perm_name: "gameplay",
         parent: "active",
         linked_actions: [
-          { account: "pxfarmer.game", action: "claim" },
-          { account: "pxfarmer.game", action: "harvest" },
+          { account: "pxfarm.game", action: "claim" },
+          { account: "pxfarm.game", action: "harvest" },
         ],
       },
     ]);
     expect(r.permissionPresent).toBe(true);
     expect(r.linkedMatched).toBe(2);
-    expect(r.linkedMissing).toContain("pxfarmer.game::plant");
+    expect(r.linkedMissing).toContain("pxfarm.game::plant");
   });
 });
