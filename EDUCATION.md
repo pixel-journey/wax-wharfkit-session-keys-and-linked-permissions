@@ -1,7 +1,7 @@
 # Education — limited session keys on WAX / Antelope
 
 > **Rung:** `npm test` passes. Plans are **unsigned**. Demo contract `pxfarm.game` (11 characters). An Antelope name is at most **12**; a longer `farmer` spelling is 13 and the name rule refuses it.  
-> Official: [WAX permissions](https://docs.wax.io/build/core-concepts/permissions) · [WharfKit](https://wharfkit.com/).
+> **The test is the rule.** Official: [WAX permissions](https://docs.wax.io/build/core-concepts/permissions) · [WharfKit](https://wharfkit.com/).
 
 ## Learning outcomes
 
@@ -46,9 +46,17 @@ Revoke: unlinkauth / updateauth delete — again with active.
 | Myth | Reality |
 | --- | --- |
 | Wallet never signs | Install/revoke still need `active` |
-| linkauth transfer for "votes" | Open transfer is high risk |
+| linkauth transfer for "games" | Open transfer is high risk |
 | Replaces owner backup | No — limited keys are disposable |
 | eosjs is fine greenfield | Prefer WharfKit + Anchor / Cloud Wallet |
+
+### Attack → test
+
+| Attack | Lab behavior |
+| --- | --- |
+| Open `eosio.token::transfer` as session | refuse / high risk |
+| 13-character demo name | refused |
+| Treat as social recovery | different product |
 
 ---
 
@@ -63,6 +71,12 @@ Revoke: unlinkauth / updateauth delete — again with active.
 ### Cluster
 
 Visualizer · auditor · rotation · social recovery · msig · hardware patterns.
+
+### Exercises
+
+1. Who signs install/revoke? (**active**.)  
+2. Max Antelope name length? (**12**.)  
+3. Is open transfer a good session link? (**No**.)
 
 ---
 
