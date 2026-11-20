@@ -1,41 +1,72 @@
-# Limited session keys on WAX / Antelope
+# Education — limited session keys on WAX / Antelope
 
-> **Rung:** `npm test` passes. Plans are unsigned. The demo contract is `pxfarm.game` (11 characters). An Antelope name is at most 12. The longer spelling with `farmer` in the middle is 13 and the name rule refuses it.  
-> Official model: [WAX permissions](https://docs.wax.io/build/core-concepts/permissions). Install path: [WharfKit](https://wharfkit.com/).
+> **Rung:** `npm test` passes. Plans are **unsigned**. Demo contract `pxfarm.game` (11 characters). An Antelope name is at most **12**; a longer `farmer` spelling is 13 and the name rule refuses it.  
+> Official: [WAX permissions](https://docs.wax.io/build/core-concepts/permissions) · [WharfKit](https://wharfkit.com/).
 
-## What “session key” means here
+## Learning outcomes
 
-A **limited dApp session key** is **not** a WharfKit Session object alone. It is an **on-chain** pattern:
+| Level | After this file |
+| --- | --- |
+| Beginner | Describe custom permission + `linkauth` to specific actions |
+| Intermediate | Explain install/revoke still need `active` |
+| Masterclass | Refuse open `eosio.token::transfer` as a "session" link |
 
-1. Create a **custom permission** under `active` (e.g. `gameplay`, `claim`) with its **own public key**
-2. **`linkauth`** that permission to specific `contract::action` pairs only
-3. Let the dApp hold the matching **private** key for routine calls — **without** prompting full wallet for every harvest
+---
 
-WharfKit **Session Kit** is how you **install** those links (once, with `active`) and how the wallet signs normal txs. The limited key is optional for high-frequency game UX.
+## Beginner — what session key means here
 
-## Myths vs reality
+A **limited dApp session key** is not a WharfKit Session object alone. It is an **on-chain** pattern:
 
-| Myth | Reality |
-|------|---------|
-| “Session keys mean the wallet never signs” | Install/revoke still needs `active` (or higher). Only **linked** actions can use the limited key. |
-| “linkauth to eosio.token::transfer is fine for votes” | Open transfer is high risk — prefer a dedicated contract action. |
-| “This replaces owner backup” | No — see social-recovery blueprint. Limited keys are disposable. |
-| “eosjs is fine for new dApps” | Prefer WharfKit Session + Anchor / Cloud Wallet plugins. |
-| “One key for the whole game is enough” | Scope links narrowly (claim ≠ transfer ≠ admin). |
+1. Create a **custom permission** under `active` (e.g. `gameplay`, `claim`) with its own public key  
+2. **`linkauth`** that permission to specific `contract::action` pairs only  
+3. Let the dApp hold the matching **private** key for routine calls — without prompting the full wallet for every harvest
 
-## Install flow (conceptual)
+WharfKit Session Kit installs those links (once, with `active`) and signs normal txs. The limited key is optional for high-frequency game UX.
 
+```bash
+npm test
 ```
+
+---
+
+## Intermediate — install flow
+
+```text
 active signs:
   updateauth  → permission gameplay (key = PUB_session)
-  linkauth    → pxfarm.game::claim  → gameplay
+  linkauth    → pxfarm.game::claim   → gameplay
   linkauth    → pxfarm.game::harvest → gameplay
 
-Later, dApp uses private session key only for those actions.
+Later: dApp uses private session key only for those actions.
 Revoke: unlinkauth / updateauth delete — again with active.
 ```
 
-## Related
+### Myths
 
-- multi-sig · hardware · social recovery · permission visualizer · offline queue  
-- [WHARFKIT-CLUSTER.md](./WHARFKIT-CLUSTER.md)
+| Myth | Reality |
+| --- | --- |
+| Wallet never signs | Install/revoke still need `active` |
+| linkauth transfer for "votes" | Open transfer is high risk |
+| Replaces owner backup | No — limited keys are disposable |
+| eosjs is fine greenfield | Prefer WharfKit + Anchor / Cloud Wallet |
+
+---
+
+## Masterclass
+
+### Common mistakes
+
+1. Linking `eosio.token::transfer` for convenience.  
+2. Using a 13-character demo account name.  
+3. Treating session keys as social recovery.
+
+### Cluster
+
+Visualizer · auditor · rotation · social recovery · msig · hardware patterns.
+
+---
+
+## What this course will not teach
+
+- Auto-broadcast of `updateauth` / `linkauth`
+- Collecting private keys in the educational UI
