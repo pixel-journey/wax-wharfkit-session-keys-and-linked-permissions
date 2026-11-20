@@ -7,9 +7,18 @@ import { revokeActionSketches } from "./revoke";
 
 describe("planSeverity", () => {
   it("gameplay is lower than vote caution", () => {
-    expect(planSeverity(demoGameplayPlan()).score).toBeLessThan(
-      planSeverity(presetRankingVote()).score
-    );
+    expect(planSeverity(demoGameplayPlan())).toEqual({
+      score: 0,
+      label: "low",
+      dangerCount: 0,
+      warnCount: 0,
+    });
+    expect(planSeverity(presetRankingVote())).toEqual({
+      score: 35,
+      label: "moderate",
+      dangerCount: 1,
+      warnCount: 0,
+    });
   });
 });
 
