@@ -27,4 +27,14 @@
 
 ## Honesty limits
 
-No broadcast in unit tests. Install still needs `active`. [docs.wax.io permissions](https://docs.wax.io/build/core-concepts/permissions) · [WharfKit](https://wharfkit.com/). Cluster: visualizer · auditor · rotation · social recovery · hardware patterns.
+No broadcast in unit tests. Install still needs `active`.
+
+| Sibling | Distinction |
+| --- | --- |
+| [permission visualizer](https://github.com/pixel-journey/wax-permission-visualizer-and-editor) | Tree + critical patterns |
+| [permission auditor](https://github.com/pixel-journey/wax-account-permission-auditor) | Score snapshot |
+| [key rotation](https://github.com/pixel-journey/wax-safe-key-rotation-assistant) | Add-first sequence |
+| [social recovery](https://github.com/pixel-journey/wax-social-recovery-and-key-backup-tools) | Owner helper weights |
+| [hardware patterns](https://github.com/pixel-journey/wax-hardware-wallet-integration-patterns) | Cold owner keys |
+
+[docs.wax.io permissions](https://docs.wax.io/build/core-concepts/permissions) · [WharfKit](https://wharfkit.com/).
