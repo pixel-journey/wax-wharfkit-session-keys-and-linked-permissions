@@ -7,6 +7,7 @@
 | [WAX permissions](https://docs.wax.io/build/core-concepts/permissions) | Custom perms + linkauth |
 | [Security and recovery](https://docs.wax.io/learn/getting-started/security-and-recovery) | Key habits |
 | [docs.wax.io](https://docs.wax.io/) | Core concepts |
+| [docs.eosnetwork.com](https://docs.eosnetwork.com/) | Permission model on Antelope |
 
 ## WharfKit (primary stack)
 
@@ -34,6 +35,12 @@ Prefer **SessionKit** over eosjs / standalone Anchor Link / UAL for greenfield w
 - Install/revoke require **active**; limited key is disposable.
 - Plans remain **unsigned** in the educational path.
 - Do **not** linkauth open `eosio.token::transfer` to a session key.
+
+## Portability
+
+Custom permission + narrow `linkauth` is an Antelope pattern. What changes per chain: **chain id**, node URL, and the SessionKit preset. `@wharfkit/starter-wax` is the WAX preset. WAX mainnet chain id is `1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4` — refuse a session that returns a different id when the host claims mainnet.
+
+Never linkauth open `eosio.token::transfer` on any chain. Owner keys still do not belong in browser storage.
 
 ## Related labs
 
